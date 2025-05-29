@@ -45,6 +45,7 @@ A2A Archive Agent
 
 - Python 3.8+
 - Git
+- Azure subscription (for production deployment)
 - OpenAI API key (for Codex development)
 
 ### Installation
@@ -60,6 +61,10 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your Azure credentials and settings
 
 # Run tests with mock data
 pytest tests/
@@ -81,6 +86,20 @@ response = agent.process_request(
     file_path="path/to/document.pbix",
     request="Extract all DAX measures and data relationships"
 )
+```
+
+### Development with Mock Data
+
+All development and testing uses comprehensive mock data - **no external API calls required**:
+
+```python
+# All testing uses offline mock files
+pytest tests/  # Tests run completely offline
+
+# Mock data includes:
+# - mock_word.docx, mock_excel.xlsx, mock_powerpoint.pptx
+# - mock_powerbi.pbix, mock_tableau.twbx
+# - mock_synapse.zip, mock_archive.zip, mock_source.tar.gz
 ```
 
 ## 🛠️ Development
@@ -231,24 +250,22 @@ This project is designed for AI-assisted development with OpenAI Codex. To contr
 4. **Test thoroughly** with mock data
 5. **Document your changes** as you go
 
-### Development Workflow
+## 🚀 Deployment
 
-```bash
-# Create feature branch
-git checkout -b feature/phase-X-step-Y
+### Local Development
+1. **Clone and install** (see Quick Start above)
+2. **Configure environment**: Copy `.env.example` to `.env` and add your Azure credentials
+3. **Run tests**: `pytest tests/` (uses mock data, works offline)
+4. **Start development**: Follow the development checklist in `AGENTS.md`
 
-# Make changes following the checklist
-# ... development work ...
+### Azure Production Deployment
+1. **Create Azure resources**: Storage Account, Key Vault, App Service
+2. **Configure Managed Identity**: Set up authentication for Azure resources
+3. **Set environment variables**: Configure in Azure App Service settings
+4. **Deploy code**: Use Azure CLI, GitHub Actions, or Azure DevOps
+5. **Verify health**: Check application logs and endpoints
 
-# Test your changes
-pytest tests/
-
-# Commit with descriptive message
-git commit -m "[Phase X] Step Y: Brief description"
-
-# Push and create PR
-git push origin feature/phase-X-step-Y
-```
+Detailed deployment instructions are available in `/docs/deployment_guide.md`
 
 ## 📋 Requirements
 
