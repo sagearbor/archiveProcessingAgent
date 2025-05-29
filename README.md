@@ -231,6 +231,7 @@ The project includes comprehensive mock data for offline development and testing
 - **Complex Archives**: Nested ZIP files with mixed content types
 
 All mock data is located in `/mock_data` and designed to test edge cases and typical usage patterns.
+Binary files for this mock data will be committed separately to keep the main project history lightweight.
 
 ## 🔒 Security Features
 
