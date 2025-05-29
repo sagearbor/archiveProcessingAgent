@@ -1073,7 +1073,7 @@ Create comprehensive test files in `/mock_data`:
 - Create feature branches: `git checkout -b feature/step-X-description`
 - Commit frequently with descriptive messages
 - Include tests with feature implementations
-- Update documentation as you go
+- Update documentation as you go.  Check off main and subtaks as you go.
 
 ## Pull Request Format
 - Title: `[Phase X] Step Y: Brief description`
