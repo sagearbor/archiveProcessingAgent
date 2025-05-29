@@ -1,0 +1,23 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.pytest_cache/
+.coverage
+*.egg-info/
+.DS_Store
+*.tmp
+*.temp
+/mock_data/*.tmp
+/mock_data/extracted_*
+
+# Environment and secrets
+.env
+.env.local
+*.key
+*.pem
+
+# Azure specific
+.azure/

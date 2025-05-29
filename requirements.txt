@@ -1,0 +1,21 @@
+# Core libraries
+python-docx>=0.8.11
+openpyxl>=3.0.9
+python-pptx>=0.6.21
+py7zr>=0.20.0
+lxml>=4.6.3
+
+# Azure integration
+azure-storage-blob>=12.14.0
+azure-keyvault-secrets>=4.6.0
+azure-identity>=1.12.0
+
+# Environment and configuration
+python-dotenv>=1.0.0
+
+# Testing
+pytest>=6.2.4
+pytest-cov>=2.12.1
+
+# Utilities
+python-magic>=0.4.24
