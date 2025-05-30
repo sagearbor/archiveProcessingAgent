@@ -281,7 +281,7 @@ A2A Archive Agent
   - Use Azure Storage for extracted archive contents when files are large
 
 **Configuration Management:**
-- [ ] Create `src/utils/config.py` with Azure Key Vault integration:
+- [x] Create `src/utils/config.py` with Azure Key Vault integration:
   ```python
   class ConfigManager:
       def __init__(self):
@@ -313,7 +313,7 @@ A2A Archive Agent
 **Testing:**
 - [x] Create `tests/core/test_archive_handler.py`
 - [x] Test with each mock archive file
-- [ ] Test error conditions with intentionally corrupted files
+- [x] Test error conditions with intentionally corrupted files
 - [ ] Test cleanup functionality
 - [ ] Test edge cases (empty archives, single files, nested structures)
 - [ ] Verify security against directory traversal attempts
@@ -326,8 +326,8 @@ A2A Archive Agent
 **Goal**: Extract content and metadata from Microsoft Office documents
 
 **Word Document Parser:**
-- [ ] Create `src/core/office_parser.py` with class `OfficeParser`
-- [ ] Implement method `parse_docx(file_path)`:
+- [x] Create `src/core/office_parser.py` with class `OfficeParser`
+- [x] Implement method `parse_docx(file_path)`:
   - Extract all text content (paragraphs, headings, tables)
   - Preserve text formatting information (bold, italic, styles)
   - Extract document metadata (author, title, creation date, etc.)
@@ -337,7 +337,7 @@ A2A Archive Agent
   - Return structured JSON with content hierarchy
 
 **Excel Workbook Parser:**
-- [ ] Implement method `parse_xlsx(file_path)`:
+- [x] Implement method `parse_xlsx(file_path)`:
   - Extract data from all worksheets
   - Preserve formulas (both formula text and calculated values)
   - Extract named ranges and defined names
@@ -348,7 +348,7 @@ A2A Archive Agent
   - Handle protected sheets (detect protection status)
 
 **PowerPoint Presentation Parser:**
-- [ ] Implement method `parse_pptx(file_path)`:
+- [x] Implement method `parse_pptx(file_path)`:
   - Extract text from all slides (titles, content, notes)
   - Preserve slide layout and structure information
   - Extract embedded images and media references
@@ -358,13 +358,13 @@ A2A Archive Agent
   - Handle slide masters and layouts
 
 **Common Functionality:**
-- [ ] Implement method `extract_images(file_path, output_dir)`:
+- [x] Implement method `extract_images(file_path, output_dir)`:
   - Extract embedded images from Office documents
   - Maintain original image formats and quality
   - Generate descriptive filenames
   - Return list of extracted image paths
 
-- [ ] Implement method `get_document_metadata(file_path)`:
+- [x] Implement method `get_document_metadata(file_path)`:
   - Extract common metadata (author, title, creation date, etc.)
   - Get document statistics (word count, page count, etc.)
   - Extract custom properties if present
@@ -378,12 +378,12 @@ A2A Archive Agent
 - [ ] Handle embedded objects that can't be extracted
 
 **Testing:**
-- [ ] Create `tests/core/test_office_parser.py`
-- [ ] Test with mock Word, Excel, and PowerPoint files
-- [ ] Verify text extraction accuracy
-- [ ] Test metadata extraction completeness
+- [x] Create `tests/core/test_office_parser.py`
+- [x] Test with mock Word, Excel, and PowerPoint files
+- [x] Verify text extraction accuracy
+- [x] Test metadata extraction completeness
 - [ ] Test with documents containing special characters
-- [ ] Test error handling with corrupted files
+- [x] Test error handling with corrupted files
 
 **Deliverable**: Complete Office document parsing with structured output
 
