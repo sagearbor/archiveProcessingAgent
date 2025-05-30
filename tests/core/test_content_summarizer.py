@@ -26,3 +26,35 @@ def test_format_for_agent_consumption():
     out = summarizer.format_for_agent_consumption(summary, "json")
     assert "total_files" in out
 
+
+def test_relationship_identification_complex():
+    summarizer = ContentSummarizer()
+    data = {
+        "relationships": {
+            "a.csv": ["b.csv", "c.csv"],
+            "b.csv": ["c.csv"],
+            "folder/d.csv": [],
+        }
+    }
+    rel = summarizer.identify_relationships(data)
+    assert rel["a.csv"] == ["b.csv", "c.csv"]
+    assert rel["b.csv"] == ["c.csv"]
+    assert rel["folder/d.csv"] == []
+
+
+def test_assess_summary_quality():
+    summarizer = ContentSummarizer()
+    good = {
+        "total_files": 2,
+        "category_counts": {},
+        "context": "demo",
+    }
+    quality = summarizer.assess_summary_quality(good)
+    assert quality["score"] == 1.0
+    assert not quality["missing"]
+
+    bad = {"total_files": 2}
+    quality = summarizer.assess_summary_quality(bad)
+    assert quality["score"] < 1.0
+    assert "category_counts" in quality["missing"]
+

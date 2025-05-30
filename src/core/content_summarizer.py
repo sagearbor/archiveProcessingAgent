@@ -46,6 +46,13 @@ class ContentSummarizer:
         """Return relationship information if present."""
         return content_data.get("relationships", {})
 
+    def assess_summary_quality(self, summary_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Evaluate summary completeness and return quality metrics."""
+        required = ["total_files", "category_counts", "context"]
+        missing = [field for field in required if field not in summary_data]
+        score = 1.0 - (len(missing) / len(required))
+        return {"score": round(score, 2), "missing": missing}
+
     def format_for_agent_consumption(self, summary_data: Dict[str, Any], output_format: str) -> str:
         """Format summary data for different agent types."""
         if output_format == "json":

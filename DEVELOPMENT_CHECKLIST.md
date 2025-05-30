@@ -595,9 +595,9 @@ A2A Archive Agent
 - [x] Create `tests/core/test_content_summarizer.py`
 - [x] Test summary generation with various content types
 - [x] Verify inventory creation accuracy and completeness
-- [ ] Test relationship identification with complex structures
+- [x] Test relationship identification with complex structures
 - [x] Test output formatting for different agent types
-- [ ] Verify quality assessment accuracy
+- [x] Verify quality assessment accuracy
 
 **Deliverable**: Comprehensive content analysis and summarization system
 
