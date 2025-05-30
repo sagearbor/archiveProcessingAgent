@@ -873,8 +873,8 @@ A2A Archive Agent
 - [ ] Create agent metadata and documentation systems
 
 **Request/Response Validation:**
-- [ ] Implement schema validation for incoming requests
-- [ ] Create response validation and quality checking
+- [x] Implement schema validation for incoming requests
+- [x] Create response validation and quality checking
 - [ ] Design rate limiting and resource management
 - [ ] Implement request tracing and audit logging
 - [ ] Create performance monitoring and metrics collection
