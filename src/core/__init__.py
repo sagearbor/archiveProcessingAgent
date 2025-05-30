@@ -5,6 +5,7 @@ from .office_parser import OfficeParser
 from .powerbi_parser import PowerBIParser
 from .tableau_parser import TableauParser
 from .synapse_parser import SynapseParser
+from .relevance_engine import RelevanceEngine
 
 __all__ = [
     "ArchiveHandler",
@@ -12,4 +13,5 @@ __all__ = [
     "PowerBIParser",
     "TableauParser",
     "SynapseParser",
+    "RelevanceEngine",
 ]
