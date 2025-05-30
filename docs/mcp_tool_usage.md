@@ -24,3 +24,17 @@ result = extract_archive_tool("mock_data/mock_archive.zip")
 | `Permission denied. Check file permissions and try again.` | Process lacks permissions | Adjust file permissions |
 | `Corrupted archive file. Unable to extract.` | Archive is damaged or unreadable | Replace or recreate the archive |
 | `Out of disk space during extraction. Free space and retry.` | Temporary directory ran out of space | Free disk space or set `TEMP_STORAGE_PATH` |
+
+## Registry Example
+
+To allow other agents to discover the tool, register it with a `ToolRegistry`:
+
+```python
+from src.mcp import extract_archive_tool, ToolRegistry
+registry = ToolRegistry()
+manifest = registry.load_manifest("src/mcp/manifest.json")
+registry.register_tool("extract_archive", extract_archive_tool, manifest=manifest)
+```
+
+Agents can then inspect `registry.discover_tools()` to learn how to call the
+`extract_archive` tool.
