@@ -11,6 +11,7 @@
 - Added tests for handling corrupted and malformed files across parsers.
 - Completed Step 12 subtask **Test with corrupted and malformed files**.
 - Added test for extremely large archives in `tests/integration/test_performance.py`.
+- Added test for password-protected archives in `tests/integration/test_security.py`.
 
 ## Next Step
-Continue with **Phase 6**, **Step 12**, subtask **Test with password-protected and encrypted files**.
+Continue with **Phase 6**, **Step 12**, subtask **Test permission denied and access control scenarios**.
