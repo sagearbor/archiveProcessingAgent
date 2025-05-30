@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import UTC, datetime, timedelta
 from typing import Any, Callable, Dict, Optional
 
 
@@ -8,6 +9,7 @@ class AgentRegistry:
 
     def __init__(self) -> None:
         self._agents: Dict[str, Dict[str, Any]] = {}
+        self._last_heartbeat: Dict[str, datetime] = {}
 
     def register_agent(
         self,
@@ -24,6 +26,7 @@ class AgentRegistry:
             "handler": handler,
             "status": "online",
         }
+        self._last_heartbeat[name] = datetime.now(UTC)
 
     def get_agent_capabilities(self, name: str) -> Dict[str, Any]:
         """Return capabilities for the specified agent."""
@@ -42,6 +45,30 @@ class AgentRegistry:
     def get_agent_status(self, name: str) -> Optional[str]:
         """Return the status of an agent if registered."""
         return self._agents.get(name, {}).get("status")
+
+    def heartbeat(self, name: str) -> None:
+        """Record a heartbeat for the specified agent."""
+        if name in self._agents:
+            self._last_heartbeat[name] = datetime.now(UTC)
+            if self.get_agent_status(name) != "online":
+                self.update_agent_status(name, "online")
+
+    def get_last_heartbeat(self, name: str) -> Optional[datetime]:
+        """Return the timestamp of the last heartbeat."""
+        return self._last_heartbeat.get(name)
+
+    def check_health(self, name: str, *, threshold: int = 60) -> str:
+        """Return current health status based on last heartbeat."""
+        last = self._last_heartbeat.get(name)
+        if last is None:
+            return "unknown"
+        if datetime.now(UTC) - last > timedelta(seconds=threshold):
+            self.update_agent_status(name, "offline")
+        return self.get_agent_status(name) or "unknown"
+
+    def report_status(self) -> Dict[str, str]:
+        """Return status for all agents."""
+        return {name: self.get_agent_status(name) or "unknown" for name in self._agents}
 
     def call_agent(self, name: str, request: Dict[str, Any]) -> Any:
         """Call the registered handler for the agent if available."""

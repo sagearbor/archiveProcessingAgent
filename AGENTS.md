@@ -830,12 +830,12 @@ A2A Archive Agent
  - [x] Implement agent capability discovery and advertisement
  - [x] Create request routing and load balancing logic
  - [x] Implement authentication and authorization for agent communication
-- [ ] Design error handling and retry mechanisms
+ - [x] Design error handling and retry mechanisms
 
 **Agent Registry and Discovery:**
  - [x] Implement agent registration system
  - [x] Create capability advertisement mechanism
-- [ ] Design agent health monitoring and status reporting
+ - [x] Design agent health monitoring and status reporting
 - [ ] Implement agent versioning and compatibility checking
 - [ ] Create agent metadata and documentation systems
 

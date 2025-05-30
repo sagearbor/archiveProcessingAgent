@@ -8,6 +8,10 @@ from typing import Any, Callable, Dict, Iterable, Optional
 from .registry import AgentRegistry
 
 
+class AgentCommunicationError(Exception):
+    """Raised when all retries to contact an agent fail."""
+
+
 class RequestRouter:
     """Simple round-robin request router using :class:`AgentRegistry`."""
 
@@ -59,9 +63,7 @@ class RequestRouter:
 
         return self.get_next_agent()
 
-    def send_request(
-        self, request: Dict[str, Any], *, retries: int = 1
-    ) -> Any:
+    def send_request(self, request: Dict[str, Any], *, retries: int = 1) -> Any:
         """Send request to agents with basic retry mechanism."""
         attempt = 0
         last_error: Exception | None = None
@@ -72,11 +74,13 @@ class RequestRouter:
                 break
             tried.add(agent_name)
             try:
-                return self.registry.call_agent(agent_name, request)
+                result = self.registry.call_agent(agent_name, request)
+                self.registry.heartbeat(agent_name)
+                return result
             except Exception as exc:  # pragma: no cover - simple retry
                 last_error = exc
                 self.registry.update_agent_status(agent_name, "error")
                 attempt += 1
         if last_error:
-            raise last_error
-        raise RuntimeError("No agents available")
+            raise AgentCommunicationError("All retries failed") from last_error
+        raise AgentCommunicationError("No agents available")
