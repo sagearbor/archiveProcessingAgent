@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from itertools import cycle
-from typing import Any, Dict, Iterable, Optional
+from typing import Any, Callable, Dict, Iterable, Optional
 
 from .registry import AgentRegistry
 
@@ -20,9 +20,18 @@ class RequestRouter:
         agents = list(self.registry.list_agents().keys())
         self._agent_cycle = cycle(agents) if agents else None
 
-    def register_agent(self, name: str, capabilities: Dict[str, Any]) -> None:
+    def register_agent(
+        self,
+        name: str,
+        capabilities: Dict[str, Any],
+        *,
+        version: str | None = None,
+        handler: Callable[[Dict[str, Any]], Any] | None = None,
+    ) -> None:
         """Register an agent and update the routing cycle."""
-        self.registry.register_agent(name, capabilities)
+        self.registry.register_agent(
+            name, capabilities, version=version, handler=handler
+        )
         self._update_cycle()
 
     def get_next_agent(self) -> Optional[str]:
@@ -49,3 +58,25 @@ class RequestRouter:
         """
 
         return self.get_next_agent()
+
+    def send_request(
+        self, request: Dict[str, Any], *, retries: int = 1
+    ) -> Any:
+        """Send request to agents with basic retry mechanism."""
+        attempt = 0
+        last_error: Exception | None = None
+        tried: set[str] = set()
+        while attempt <= retries:
+            agent_name = self.route_request(request)
+            if agent_name is None or agent_name in tried:
+                break
+            tried.add(agent_name)
+            try:
+                return self.registry.call_agent(agent_name, request)
+            except Exception as exc:  # pragma: no cover - simple retry
+                last_error = exc
+                self.registry.update_agent_status(agent_name, "error")
+                attempt += 1
+        if last_error:
+            raise last_error
+        raise RuntimeError("No agents available")
