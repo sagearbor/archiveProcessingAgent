@@ -65,6 +65,9 @@ pip install -r requirements.txt
 # Set up environment variables
 python scripts/setup.py  # interactive CLI helper (prompts to run tests when done)
 # Alternatively open `scripts/setup.html` in a browser for a local web form.
+# If `setup.html` is missing you can regenerate it with:
+# `python scripts/build_setup_html.py` (detects your OS to set a default
+# `TEMP_STORAGE_PATH`)
 # If you enter `MANUAL` for the API key the script or page will show a command
 # you can run later to append it to `.env`.
 # You can still create the file manually:
@@ -262,6 +265,8 @@ This project is designed for AI-assisted development with OpenAI Codex. To contr
 1. **Clone and install** (see Quick Start above)
 2. **Configure environment**: Run `python scripts/setup.py` or open `scripts/setup.html`
    to generate your `.env` file (both show a command for the API key if you enter `MANUAL`).
+   If the HTML form is missing, regenerate it with `python scripts/build_setup_html.py`.
+   The script detects Windows vs. Unix systems and sets a suitable `TEMP_STORAGE_PATH`.
    The CLI will also offer to run the test suite when finished. You may still copy `.env.example` manually if desired.
 3. **Run tests**: `pytest tests/` (uses mock data, works offline)
 4. **Start development**: Follow the development checklist in `AGENTS.md`
