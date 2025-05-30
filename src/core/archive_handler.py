@@ -10,6 +10,9 @@ from typing import List, Optional
 
 import py7zr
 
+from src.utils.azure_storage import AzureStorageClient
+from src.utils.config import AppConfig, load_config
+
 try:
     import magic
 except Exception:  # pragma: no cover - optional dependency
@@ -26,6 +29,24 @@ class ArchiveHandler:
         ".tgz": "tar",
         ".7z": "7z",
     }
+
+    def __init__(
+        self,
+        storage_client: AzureStorageClient | None = None,
+        config: AppConfig | None = None,
+    ) -> None:
+        """Initialize handler with optional Azure storage and config."""
+        self.storage_client = storage_client
+        self.config = config or load_config()
+
+    def _use_azure(self, file_path: Path) -> bool:
+        """Return True if Azure storage should be used for this file."""
+        if self.storage_client is None:
+            return False
+        if self.config.app_env == "production":
+            return True
+        size_limit = self.config.max_file_size_mb * 1024 * 1024
+        return file_path.stat().st_size > size_limit
 
     def detect_archive_type(self, file_path: Path) -> Optional[str]:
         """Return archive type based on extension and magic bytes."""
@@ -70,11 +91,24 @@ class ArchiveHandler:
         if archive_type is None:
             raise ValueError("Unsupported archive type")
 
+        use_azure = self._use_azure(file_path)
+
+        if (
+            file_path.stat().st_size
+            > self.config.max_file_size_mb * 1024 * 1024
+            and not use_azure
+        ):
+            raise ValueError("Archive exceeds configured size limit")
+
         target_dir = Path(tempfile.mkdtemp()) if extract_to is None else extract_to
         extracted: List[Path] = []
 
         if archive_type == "zip":
-            with zipfile.ZipFile(file_path) as z:
+            try:
+                zf = zipfile.ZipFile(file_path)
+            except zipfile.BadZipFile as exc:
+                raise ValueError("Corrupted archive") from exc
+            with zf as z:
                 members = z.namelist()
                 if len(members) > max_members:
                     raise ValueError("Archive contains too many files")
@@ -82,7 +116,11 @@ class ArchiveHandler:
                     self._safe_extract(z, member, target_dir)
                     extracted.append(target_dir / member)
         elif archive_type == "tar":
-            with tarfile.open(file_path) as t:
+            try:
+                tf = tarfile.open(file_path)
+            except tarfile.TarError as exc:
+                raise ValueError("Corrupted archive") from exc
+            with tf as t:
                 members = t.getmembers()
                 if len(members) > max_members:
                     raise ValueError("Archive contains too many files")
@@ -91,7 +129,11 @@ class ArchiveHandler:
                     if member.isfile():
                         extracted.append(target_dir / member.name)
         elif archive_type == "7z":
-            with py7zr.SevenZipFile(file_path) as z:
+            try:
+                zf = py7zr.SevenZipFile(file_path)
+            except py7zr.exceptions.Bad7zFile as exc:
+                raise ValueError("Corrupted archive") from exc
+            with zf as z:
                 members = z.getnames()
                 if len(members) > max_members:
                     raise ValueError("Archive contains too many files")
@@ -99,6 +141,14 @@ class ArchiveHandler:
                 extracted.extend([p for p in target_dir.rglob("*") if p.is_file()])
         else:
             raise ValueError("Unsupported archive type")
+
+        if use_azure:
+            self.storage_client.upload_files(extracted)
+            for f in extracted:
+                try:
+                    f.unlink()
+                except Exception:
+                    pass
         return extracted
 
     def list_contents(self, file_path: Path) -> List[str]:
@@ -120,7 +170,11 @@ class ArchiveHandler:
         """Context manager that extracts to a temporary directory and cleans up."""
         with tempfile.TemporaryDirectory() as tmpdir:
             files = self.extract_archive(file_path, Path(tmpdir), max_members=max_members)
-            yield files
+            try:
+                yield files
+            finally:
+                if self._use_azure(file_path) and self.storage_client:
+                    self.storage_client.cleanup_temp_blobs()
 
     def _safe_extract(
         self, zipf: zipfile.ZipFile, member: str, target_dir: Path
