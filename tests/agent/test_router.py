@@ -1,5 +1,11 @@
+import pytest
+from datetime import timedelta
+
 from src.agent.registry import AgentRegistry
-from src.agent.router import RequestRouter
+from src.agent.router import (
+    AgentCommunicationError,
+    RequestRouter,
+)
 
 
 def test_round_robin_routing():
@@ -34,3 +40,32 @@ def test_send_request_with_retry():
     result = router.send_request({"id": 1}, retries=1)
     assert result == {"ok": True, "agent": 1}
     assert registry.get_agent_status("bad") == "error"
+
+
+def test_send_request_all_fail():
+    registry = AgentRegistry()
+
+    def fail(_):
+        raise RuntimeError("fail")
+
+    router = RequestRouter(registry)
+    router.register_agent("a1", {}, handler=fail)
+    router.register_agent("a2", {}, handler=fail)
+
+    with pytest.raises(AgentCommunicationError):
+        router.send_request({}, retries=1)
+
+
+def test_router_heartbeat():
+    registry = AgentRegistry()
+
+    def ok(_):
+        return "ok"
+
+    router = RequestRouter(registry)
+    router.register_agent("a1", {}, handler=ok)
+    assert registry.get_last_heartbeat("a1") is not None
+    registry._last_heartbeat["a1"] -= timedelta(seconds=2)
+    assert registry.check_health("a1", threshold=1) == "offline"
+    router.send_request({}, retries=0)
+    assert registry.check_health("a1", threshold=1) == "online"
