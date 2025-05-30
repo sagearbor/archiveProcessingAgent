@@ -69,3 +69,20 @@ def test_router_heartbeat():
     assert registry.check_health("a1", threshold=1) == "offline"
     router.send_request({}, retries=0)
     assert registry.check_health("a1", threshold=1) == "online"
+
+
+def test_audit_logging():
+    registry = AgentRegistry()
+
+    def ok(req):
+        return {"id": req.get("id")}
+
+    router = RequestRouter(registry)
+    router.register_agent("a1", {}, handler=ok)
+    router.send_request({"id": 123}, retries=0)
+    log = router.get_audit_log()
+    assert len(log) == 1
+    entry = log[0]
+    assert entry["agent"] == "a1"
+    assert entry["success"] is True
+    assert entry["request"]["id"] == 123

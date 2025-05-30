@@ -18,13 +18,15 @@ class AgentRegistry:
         *,
         version: str | None = None,
         handler: Callable[[Dict[str, Any]], Any] | None = None,
+        metadata: Dict[str, Any] | None = None,
     ) -> None:
-        """Register an agent with optional handler and version."""
+        """Register an agent with optional handler, version, and metadata."""
         self._agents[name] = {
             "capabilities": capabilities,
             "version": version,
             "handler": handler,
             "status": "online",
+            "metadata": metadata or {},
         }
         self._last_heartbeat[name] = datetime.now(UTC)
 
@@ -76,3 +78,36 @@ class AgentRegistry:
         if handler is None:
             raise ValueError(f"No handler registered for agent {name}")
         return handler(request)
+
+    def get_agent_metadata(self, name: str) -> Dict[str, Any]:
+        """Return metadata associated with an agent."""
+        return self._agents.get(name, {}).get("metadata", {})
+
+    def is_version_compatible(
+        self, name: str, *, minimum: str | None = None, maximum: str | None = None
+    ) -> bool:
+        """Return ``True`` if the agent's version is within the given range."""
+        version = self._agents.get(name, {}).get("version")
+        if version is None:
+            return False
+        try:
+            from packaging.version import Version
+
+            ver = Version(version)
+            if minimum and ver < Version(minimum):
+                return False
+            if maximum and ver > Version(maximum):
+                return False
+        except Exception:  # pragma: no cover - invalid version
+            return False
+        return True
+
+    def find_compatible_agents(
+        self, *, minimum: str | None = None, maximum: str | None = None
+    ) -> list[str]:
+        """Return list of agents compatible with the version range."""
+        return [
+            name
+            for name in self._agents
+            if self.is_version_compatible(name, minimum=minimum, maximum=maximum)
+        ]

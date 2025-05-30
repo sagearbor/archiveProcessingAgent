@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from itertools import cycle
+from datetime import UTC, datetime
 from typing import Any, Callable, Dict, Iterable, Optional
 
 from .registry import AgentRegistry
@@ -18,6 +19,7 @@ class RequestRouter:
     def __init__(self, registry: AgentRegistry) -> None:
         self.registry = registry
         self._agent_cycle: Optional[Iterable[str]] = None
+        self._audit_log: list[Dict[str, Any]] = []
 
     def _update_cycle(self) -> None:
         """Refresh the round-robin cycle when agents change."""
@@ -76,11 +78,34 @@ class RequestRouter:
             try:
                 result = self.registry.call_agent(agent_name, request)
                 self.registry.heartbeat(agent_name)
+                self._audit_log.append(
+                    {
+                        "agent": agent_name,
+                        "timestamp": datetime.now(UTC).isoformat(),
+                        "request": request,
+                        "success": True,
+                    }
+                )
                 return result
             except Exception as exc:  # pragma: no cover - simple retry
                 last_error = exc
                 self.registry.update_agent_status(agent_name, "error")
+                self._audit_log.append(
+                    {
+                        "agent": agent_name,
+                        "timestamp": datetime.now(UTC).isoformat(),
+                        "request": request,
+                        "success": False,
+                        "error": str(exc),
+                    }
+                )
                 attempt += 1
         if last_error:
             raise AgentCommunicationError("All retries failed") from last_error
         raise AgentCommunicationError("No agents available")
+
+    def get_audit_log(self, limit: int | None = None) -> list[Dict[str, Any]]:
+        """Return recent audit log entries."""
+        if limit is None or limit >= len(self._audit_log):
+            return list(self._audit_log)
+        return self._audit_log[-limit:]
