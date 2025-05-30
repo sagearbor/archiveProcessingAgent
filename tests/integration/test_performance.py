@@ -194,3 +194,23 @@ def test_cpu_usage_profile(tmp_path):
     cpu_time = time.process_time() - start
 
     assert cpu_time < 1.0
+
+
+def test_realistic_production_scale_workload(tmp_path):
+    handler = ArchiveHandler()
+    archive = tmp_path / "prod_scale.zip"
+    with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED) as z:
+        chunk = b"c" * 1024 * 1024  # 1 MB per file
+        for i in range(100):
+            z.writestr(f"file_{i}.txt", chunk)
+
+    start = time.time()
+    tracemalloc.start()
+    files = handler.extract_archive(archive, tmp_path / "out")
+    current, peak = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
+    duration = time.time() - start
+
+    assert len(files) == 100
+    assert duration < 10.0
+    assert peak < 200 * 1024 * 1024

@@ -22,6 +22,7 @@
 - Added concurrency test for request router in `tests/integration/test_performance.py`.
 
 Added CPU usage profiling test in `tests/integration/test_performance.py`.
+Completed Step 12 subtask **Test with realistic production-scale workloads**.
 
 ## Next Step
-Continue with **Phase 6**, **Step 12**, subtask **Test with realistic production-scale workloads**.
+Continue with **Phase 6**, **Step 12**, subtask **Test against directory traversal attacks (zip slip vulnerabilities)**.
