@@ -679,7 +679,7 @@ A2A Archive Agent
 - [x] Define tool metadata and description
 - [x] Specify parameter schemas and validation rules
 - [x] Document tool capabilities and limitations
-- [ ] Create tool registration and discovery functionality
+- [x] Create tool registration and discovery functionality
 
 **Testing:**
 - [x] Create `tests/mcp/test_mcp_tool.py`
@@ -687,13 +687,13 @@ A2A Archive Agent
 - [x] Test different extraction modes
 - [x] Test input validation and error conditions
 - [x] Test output format consistency
-- [ ] Test integration with MCP framework
+- [x] Test integration with MCP framework
 
 **Documentation:**
 - [x] Create tool usage documentation in `docs/mcp_tool_usage.md`
 - [x] Include parameter descriptions and examples
 - [x] Document error codes and troubleshooting
-- [ ] Provide integration examples for different agent types
+- [x] Provide integration examples for different agent types
 
 **Deliverable**: Production-ready MCP tool for basic archive operations
 
@@ -863,21 +863,21 @@ A2A Archive Agent
 - [x] Implement agent capability discovery and advertisement
 - [x] Create request routing and load balancing logic
 - [x] Implement authentication and authorization for agent communication
-- [ ] Design error handling and retry mechanisms
+- [x] Design error handling and retry mechanisms
 
 **Agent Registry and Discovery:**
  - [x] Implement agent registration system
  - [x] Create capability advertisement mechanism
-- [ ] Design agent health monitoring and status reporting
-- [ ] Implement agent versioning and compatibility checking
-- [ ] Create agent metadata and documentation systems
+ - [x] Design agent health monitoring and status reporting
+ - [x] Implement agent versioning and compatibility checking
+ - [x] Create agent metadata and documentation systems
 
 **Request/Response Validation:**
 - [x] Implement schema validation for incoming requests
 - [x] Create response validation and quality checking
-- [ ] Design rate limiting and resource management
-- [ ] Implement request tracing and audit logging
-- [ ] Create performance monitoring and metrics collection
+- [x] Design rate limiting and resource management
+- [x] Implement request tracing and audit logging
+- [x] Create performance monitoring and metrics collection
 
 **Integration Testing:**
 - [x] Create mock A2A agents for testing
