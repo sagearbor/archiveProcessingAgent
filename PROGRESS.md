@@ -3,7 +3,7 @@
 ## Overall Status
 - **Completed Steps**: Phase 1 through Phase 5 Step 11
 - **Remaining Steps**: Phase 6 Step 12 and Phase 6 Step 13
-- **Approximate Completion**: 95%
+- **Approximate Completion**: 96%
 
 ## Latest Update
 - Added test for Key Vault configuration loading in `tests/integration/test_external_systems.py`.
@@ -15,6 +15,7 @@
 - Added test for permission denied extraction in `tests/integration/test_security.py`.
 - Added test for disk space exhaustion in `tests/integration/test_performance.py`.
 - Completed Step 12 subtask **Benchmark extraction speed with various archive sizes**.
+- Added test for memory usage during extraction in `tests/integration/test_performance.py`.
 
 ## Next Step
-Continue with **Phase 6**, **Step 12**, subtask **Test memory usage patterns and optimization**.
+Continue with **Phase 6**, **Step 12**, subtask **Measure response times for different request types**.

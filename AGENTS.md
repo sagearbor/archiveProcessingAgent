@@ -886,7 +886,7 @@ A2A Archive Agent
 
 **Performance Testing:**
 - [x] Benchmark extraction speed with various archive sizes
-- [ ] Test memory usage patterns and optimization
+- [x] Test memory usage patterns and optimization
 - [ ] Measure response times for different request types
 - [ ] Test concurrent request handling and resource sharing
 - [ ] Profile CPU usage and identify bottlenecks

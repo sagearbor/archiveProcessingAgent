@@ -1,6 +1,7 @@
 import time
 from pathlib import Path
 import zipfile
+import tracemalloc
 import pytest
 
 from src.core.archive_handler import ArchiveHandler
@@ -98,3 +99,19 @@ def test_benchmark_extraction_speed_various_sizes(tmp_path, file_count):
 
     assert len(files) == file_count
     assert duration < file_count * 0.1 + 2
+
+
+def test_memory_usage_during_extraction(tmp_path):
+    handler = ArchiveHandler()
+    archive = tmp_path / "memory.zip"
+    with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED) as z:
+        chunk = b"b" * 1024 * 1024  # 1 MB
+        for i in range(10):
+            z.writestr(f"file_{i}.txt", chunk)
+
+    tracemalloc.start()
+    handler.extract_archive(archive, tmp_path / "out")
+    current, peak = tracemalloc.get_traced_memory()
+    tracemalloc.stop()
+
+    assert peak < 50 * 1024 * 1024
