@@ -24,6 +24,8 @@
 Added CPU usage profiling test in `tests/integration/test_performance.py`.
 Completed Step 12 subtask **Test with realistic production-scale workloads**.
 Completed Step 12 subtask **Test against directory traversal attacks (zip slip vulnerabilities)**.
+Added tests verifying input validation and sanitization of request parameters and file paths.
+Completed Step 12 subtask **Verify input validation and sanitization**.
 
 ## Next Step
-Continue with **Phase 6**, **Step 12**, subtask **Verify input validation and sanitization**.
+Continue with **Phase 6**, **Step 12**, subtask **Test with malicious archives (zip bombs, excessive nesting)**.

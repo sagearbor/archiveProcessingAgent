@@ -53,3 +53,38 @@ def test_tar_directory_traversal(tmp_path: Path):
     handler = ArchiveHandler()
     with pytest.raises(ValueError):
         handler.extract_archive(archive, tmp_path / "out")
+
+
+def test_extract_tool_invalid_max_files(tmp_path):
+    archive = tmp_path / "simple.zip"
+    with zipfile.ZipFile(archive, "w") as z:
+        z.writestr("a.txt", "1")
+    from src.mcp.mcp_tool import extract_archive_tool
+
+    result = extract_archive_tool(str(archive), max_files=0)
+    assert result["status"] == "error"
+
+
+def test_request_interpreter_sanitization():
+    from src.agent.request_interpreter import RequestInterpreter
+
+    text = "<script>alert('x')</script> extract data; DROP TABLE users;"
+    interp = RequestInterpreter()
+    res = interp.analyze_request_intent(text)
+    assert res["intent"] == "extract"
+    for kw in res["keywords"]:
+        assert all(ch.isalnum() or ch == "_" for ch in kw)
+
+
+def test_extract_tool_special_char_filename(tmp_path):
+    archive = tmp_path / "weird;name.zip"
+    with zipfile.ZipFile(archive, "w") as z:
+        z.writestr("file.txt", "data")
+    from src.mcp.mcp_tool import extract_archive_tool
+
+    result = extract_archive_tool(str(archive))
+    assert result["status"] == "success"
+    assert any(
+        (Path(f).name if isinstance(f, str) else Path(f["path"]).name) == "file.txt"
+        for f in result["files"]
+    )
