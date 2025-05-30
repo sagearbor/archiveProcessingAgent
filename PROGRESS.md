@@ -17,6 +17,8 @@
 - Completed Step 12 subtask **Benchmark extraction speed with various archive sizes**.
 - Added test for memory usage during extraction in `tests/integration/test_performance.py`.
 - Completed Step 12 subtask **Measure response times for different request types**.
+- Added tests for relationship identification with complex structures.
+- Added tests verifying summary quality assessment accuracy.
 
 ## Next Step
 Continue with **Phase 6**, **Step 12**, subtask **Test concurrent request handling and resource sharing**.
