@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from src.core.office_parser import OfficeParser
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "mock_data"
@@ -26,3 +28,27 @@ def test_parse_pptx():
     parser = OfficeParser()
     result = parser.parse_pptx(DATA_DIR / "mock_powerpoint.pptx")
     assert any("Title" in slide["texts"][0] for slide in result["slides"])
+
+
+def test_parse_corrupted_docx(tmp_path):
+    bad = tmp_path / "bad.docx"
+    bad.write_text("invalid")
+    parser = OfficeParser()
+    with pytest.raises(ValueError):
+        parser.parse_docx(bad)
+
+
+def test_parse_corrupted_xlsx(tmp_path):
+    bad = tmp_path / "bad.xlsx"
+    bad.write_text("invalid")
+    parser = OfficeParser()
+    with pytest.raises(ValueError):
+        parser.parse_xlsx(bad)
+
+
+def test_parse_corrupted_pptx(tmp_path):
+    bad = tmp_path / "bad.pptx"
+    bad.write_text("invalid")
+    parser = OfficeParser()
+    with pytest.raises(ValueError):
+        parser.parse_pptx(bad)
