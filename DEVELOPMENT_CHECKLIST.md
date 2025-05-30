@@ -628,7 +628,7 @@ A2A Archive Agent
   - Extract to secure temporary location
   - Return file listing with basic metadata
 
-- [ ] Implement extraction modes:
+- [x] Implement extraction modes:
   - **"basic"**: Simple file listing with paths and sizes
   - **"detailed"**: Include metadata, file types, structure analysis
   - **"content"**: Include text extraction from supported files
@@ -636,9 +636,9 @@ A2A Archive Agent
 
 **Input Validation:**
 - [x] Validate file path security (prevent directory traversal)
-- [ ] Check file size limits (prevent processing extremely large archives)
-- [ ] Verify archive format is supported
-- [ ] Validate extraction parameters are within safe ranges
+- [x] Check file size limits (prevent processing extremely large archives)
+- [x] Verify archive format is supported
+- [x] Validate extraction parameters are within safe ranges
 - [x] Return clear error messages for invalid inputs
 
 **Output Standardization:**
@@ -669,7 +669,7 @@ A2A Archive Agent
   ```
 
 - [x] Handle file not found errors gracefully
-- [ ] Manage permission denied scenarios
+- [x] Manage permission denied scenarios
 - [ ] Deal with corrupted archive files
 - [ ] Handle out-of-disk-space conditions
 - [ ] Provide informative error messages with suggested solutions
@@ -684,8 +684,8 @@ A2A Archive Agent
 **Testing:**
 - [x] Create `tests/mcp/test_mcp_tool.py`
 - [ ] Test with all mock archive files
-- [ ] Test different extraction modes
-- [ ] Test input validation and error conditions
+- [x] Test different extraction modes
+- [x] Test input validation and error conditions
 - [ ] Test output format consistency
 - [ ] Test integration with MCP framework
 

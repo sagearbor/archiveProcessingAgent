@@ -12,6 +12,7 @@ venv/
 *.temp
 /mock_data/*.tmp
 /mock_data/extracted_*
+/mock_data/mock_*
 
 # Environment and secrets
 .env
