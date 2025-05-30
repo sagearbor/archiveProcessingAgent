@@ -4,6 +4,7 @@ import os
 import tarfile
 import tempfile
 import zipfile
+from contextlib import contextmanager
 from pathlib import Path
 from typing import List, Optional
 
@@ -113,6 +114,13 @@ class ArchiveHandler:
             with py7zr.SevenZipFile(file_path) as z:
                 return z.getnames()
         raise ValueError("Unsupported archive type")
+
+    @contextmanager
+    def temp_extract(self, file_path: Path, max_members: int = 1000):
+        """Context manager that extracts to a temporary directory and cleans up."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            files = self.extract_archive(file_path, Path(tmpdir), max_members=max_members)
+            yield files
 
     def _safe_extract(
         self, zipf: zipfile.ZipFile, member: str, target_dir: Path

@@ -23,6 +23,7 @@ venv/
 # Environment and secrets
 .env
 .env.local
+.env.production
 *.key
 *.pem
 

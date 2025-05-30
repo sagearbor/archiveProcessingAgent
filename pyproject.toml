@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "archive-processing-agent"
+version = "1.0.0"
+description = "Intelligent archive extraction and processing agent"
+authors = [{name="Archive Dev"}]
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text="MIT"}
+
+[project.urls]
+Home = "https://example.com"
+
+[tool.setuptools.package-dir]
+"" = "src"
