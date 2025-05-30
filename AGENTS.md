@@ -849,14 +849,14 @@ A2A Archive Agent
 **Integration Testing:**
  - [x] Create mock A2A agents for testing
  - [x] Test agent-to-agent communication patterns
- - [x] Verify protocol compliance and compatibility
- - [x] Test error scenarios and recovery mechanisms
- - [ ] Performance testing under various loads
+- [x] Verify protocol compliance and compatibility
+- [x] Test error scenarios and recovery mechanisms
+- [x] Performance testing under various loads
 
 **Documentation:**
- - [x] Create A2A protocol specification document
- - [x] Write integration guide for other agents
- - [ ] Document API endpoints and message formats
+- [x] Create A2A protocol specification document
+- [x] Write integration guide for other agents
+- [x] Document API endpoints and message formats
  - [x] Create troubleshooting and debugging guide
  - [x] Provide example implementations and use cases
 
