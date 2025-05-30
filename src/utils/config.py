@@ -28,6 +28,7 @@ class AppConfig:
     agent_name: str = "archive-processing-agent"
     agent_version: str = "1.0.0"
     agent_auth_token: Optional[str] = None
+    max_archive_files: int = 1000
 
 
 REQUIRED_VARS: Sequence[str] = ("APP_ENV", "LOG_LEVEL")
@@ -77,6 +78,7 @@ def load_config() -> AppConfig:
         agent_name=os.getenv("AGENT_NAME", "archive-processing-agent"),
         agent_version=os.getenv("AGENT_VERSION", "1.0.0"),
         agent_auth_token=os.getenv("AGENT_AUTH_TOKEN"),
+        max_archive_files=int(os.getenv("MAX_ARCHIVE_FILES", "1000")),
     )
 
 
