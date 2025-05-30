@@ -1,6 +1,6 @@
 import os
 import pytest
-from src.utils.config import load_config, ConfigError
+from src.utils.config import load_config, ConfigError, ConfigManager
 
 
 def test_load_config_success(monkeypatch):
@@ -16,3 +16,15 @@ def test_load_config_missing(monkeypatch):
     monkeypatch.delenv("LOG_LEVEL", raising=False)
     with pytest.raises(ConfigError):
         load_config()
+
+
+def test_config_manager(monkeypatch):
+    monkeypatch.setenv("APP_ENV", "test")
+    monkeypatch.setenv("LOG_LEVEL", "INFO")
+    monkeypatch.setenv("AZURE_STORAGE_ACCOUNT_NAME", "acc")
+    monkeypatch.setenv("AZURE_STORAGE_ACCOUNT_KEY", "key")
+    mgr = ConfigManager()
+    storage_cfg = mgr.get_azure_storage_config()
+    assert storage_cfg["account_name"] == "acc"
+    app_cfg = mgr.get_application_config()
+    assert app_cfg.app_env == "test"
