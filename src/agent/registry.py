@@ -37,7 +37,9 @@ class AgentRegistry:
 
     def list_agents(self) -> Dict[str, Dict[str, Any]]:
         """Return all registered agents and their capabilities."""
-        return {name: data["capabilities"] for name, data in self._agents.items()}
+        return {
+            name: data["capabilities"] for name, data in self._agents.items()
+        }
 
     def update_agent_status(self, name: str, status: str) -> None:
         """Update the status of an agent (e.g., online/offline/error)."""
@@ -70,7 +72,10 @@ class AgentRegistry:
 
     def report_status(self) -> Dict[str, str]:
         """Return status for all agents."""
-        return {name: self.get_agent_status(name) or "unknown" for name in self._agents}
+        return {
+            name: self.get_agent_status(name) or "unknown"
+            for name in self._agents
+        }
 
     def call_agent(self, name: str, request: Dict[str, Any]) -> Any:
         """Call the registered handler for the agent if available."""
@@ -83,8 +88,22 @@ class AgentRegistry:
         """Return metadata associated with an agent."""
         return self._agents.get(name, {}).get("metadata", {})
 
+    def add_agent_documentation(self, name: str, documentation: str) -> None:
+        """Attach documentation text to an agent."""
+        if name in self._agents:
+            self._agents[name].setdefault("docs", "")
+            self._agents[name]["docs"] += documentation
+
+    def get_agent_documentation(self, name: str) -> str:
+        """Return documentation associated with an agent."""
+        return self._agents.get(name, {}).get("docs", "")
+
     def is_version_compatible(
-        self, name: str, *, minimum: str | None = None, maximum: str | None = None
+        self,
+        name: str,
+        *,
+        minimum: str | None = None,
+        maximum: str | None = None,
     ) -> bool:
         """Return ``True`` if the agent's version is within the given range."""
         version = self._agents.get(name, {}).get("version")
@@ -109,5 +128,7 @@ class AgentRegistry:
         return [
             name
             for name in self._agents
-            if self.is_version_compatible(name, minimum=minimum, maximum=maximum)
+            if self.is_version_compatible(
+                name, minimum=minimum, maximum=maximum
+            )
         ]
