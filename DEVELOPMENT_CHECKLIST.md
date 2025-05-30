@@ -468,9 +468,9 @@ A2A Archive Agent
 - [x] Create `tests/core/test_tableau_parser.py`
 - [x] Create `tests/core/test_synapse_parser.py`
 - [x] Test each parser with corresponding mock data
-- [ ] Verify parsing accuracy and completeness
-- [ ] Test error handling with malformed files
-- [ ] Test with empty or minimal content files
+- [x] Verify parsing accuracy and completeness
+- [x] Test error handling with malformed files
+- [x] Test with empty or minimal content files
 
 **Deliverable**: Specialized parsers for business intelligence and cloud platforms
 
