@@ -11,6 +11,7 @@ from src.core.synapse_parser import SynapseParser
 from src.core.relevance_engine import RelevanceEngine
 from src.core.content_summarizer import ContentSummarizer
 from src.utils.config import load_config
+from .authentication import TokenAuthenticator
 
 from .request_interpreter import RequestInterpreter
 
@@ -18,7 +19,7 @@ from .request_interpreter import RequestInterpreter
 class ArchiveAgent:
     """Main agent class orchestrating archive processing."""
 
-    def __init__(self) -> None:
+    def __init__(self, authenticator: TokenAuthenticator | None = None) -> None:
         self.config = load_config()
         self.archive_handler = ArchiveHandler()
         self.office_parser = OfficeParser()
@@ -28,6 +29,7 @@ class ArchiveAgent:
         self.relevance_engine = RelevanceEngine()
         self.summarizer = ContentSummarizer()
         self.interpreter = RequestInterpreter()
+        self.authenticator = authenticator or TokenAuthenticator()
         self.context: List[Dict[str, Any]] = []
 
     def process_request(
@@ -35,8 +37,12 @@ class ArchiveAgent:
         file_path: str,
         request_text: str,
         context: Optional[Dict[str, Any]] = None,
+        auth_token: Optional[str] = None,
     ) -> Dict[str, Any]:
         """Process a request against the provided file."""
+        if not self.authenticator.is_authorized(auth_token):
+            raise PermissionError("Unauthorized")
+
         path = Path(file_path)
         if not path.exists():
             raise FileNotFoundError(file_path)

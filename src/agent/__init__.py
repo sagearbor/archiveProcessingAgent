@@ -4,6 +4,7 @@ from .response_formatter import ResponseFormatter
 from .protocol import AgentRequest, AgentResponse
 from .registry import AgentRegistry
 from .router import RequestRouter
+from .authentication import TokenAuthenticator
 
 __all__ = [
     "ArchiveAgent",
@@ -13,4 +14,5 @@ __all__ = [
     "AgentResponse",
     "AgentRegistry",
     "RequestRouter",
+    "TokenAuthenticator",
 ]
