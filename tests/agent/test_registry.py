@@ -29,3 +29,19 @@ def test_health_monitoring():
     assert registry.check_health("agent1", threshold=1) == "offline"
     registry.heartbeat("agent1")
     assert registry.check_health("agent1", threshold=1) == "online"
+
+
+def test_version_compatibility_and_metadata():
+    registry = AgentRegistry()
+    registry.register_agent(
+        "agent1",
+        {},
+        version="1.2.0",
+        metadata={"description": "test agent"},
+    )
+    assert registry.is_version_compatible("agent1", minimum="1.0")
+    assert not registry.is_version_compatible("agent1", minimum="2.0")
+    assert registry.get_agent_metadata("agent1") == {"description": "test agent"}
+    registry.register_agent("agent2", {}, version="0.9")
+    compatible = registry.find_compatible_agents(minimum="1.0")
+    assert compatible == ["agent1"]

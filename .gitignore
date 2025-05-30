@@ -12,7 +12,6 @@ venv/
 *.temp
 /mock_data/*.tmp
 /mock_data/extracted_*
-# Ignore binary mock data files
 /mock_data/*.zip
 /mock_data/*.tar.gz
 /mock_data/*.tar
