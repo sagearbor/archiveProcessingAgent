@@ -3,6 +3,7 @@ from .request_interpreter import RequestInterpreter
 from .response_formatter import ResponseFormatter
 from .protocol import AgentRequest, AgentResponse
 from .registry import AgentRegistry
+from .router import RequestRouter
 
 __all__ = [
     "ArchiveAgent",
@@ -11,4 +12,5 @@ __all__ = [
     "AgentRequest",
     "AgentResponse",
     "AgentRegistry",
+    "RequestRouter",
 ]
