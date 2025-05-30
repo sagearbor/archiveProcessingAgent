@@ -27,6 +27,7 @@ class AppConfig:
     temp_storage_path: str = "/tmp/archive_processing"
     agent_name: str = "archive-processing-agent"
     agent_version: str = "1.0.0"
+    agent_auth_token: Optional[str] = None
 
 
 REQUIRED_VARS: Sequence[str] = ("APP_ENV", "LOG_LEVEL")
@@ -75,4 +76,5 @@ def load_config() -> AppConfig:
         temp_storage_path=os.getenv("TEMP_STORAGE_PATH", "/tmp/archive_processing"),
         agent_name=os.getenv("AGENT_NAME", "archive-processing-agent"),
         agent_version=os.getenv("AGENT_VERSION", "1.0.0"),
+        agent_auth_token=os.getenv("AGENT_AUTH_TOKEN"),
     )
