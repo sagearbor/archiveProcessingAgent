@@ -877,10 +877,10 @@ A2A Archive Agent
 **Error Handling and Edge Cases:**
 - [ ] Test with corrupted and malformed files
 - [ ] Test with extremely large archives (memory and performance limits)
-- [ ] Test with empty files and archives
-- [ ] Test with files containing special characters and Unicode
+- [x] Test with empty files and archives
+- [x] Test with files containing special characters and Unicode
 - [ ] Test with password-protected and encrypted files
-- [ ] Test with nested archives and complex directory structures
+- [x] Test with nested archives and complex directory structures
 - [ ] Test permission denied and access control scenarios
 - [ ] Test disk space exhaustion and resource limitations
 
