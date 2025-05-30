@@ -827,14 +827,14 @@ A2A Archive Agent
 
 **A2A Communication Protocol:**
  - [x] Define standardized request/response message formats
-- [ ] Implement agent capability discovery and advertisement
+ - [x] Implement agent capability discovery and advertisement
 - [ ] Create request routing and load balancing logic
 - [ ] Implement authentication and authorization for agent communication
 - [ ] Design error handling and retry mechanisms
 
 **Agent Registry and Discovery:**
-- [ ] Implement agent registration system
-- [ ] Create capability advertisement mechanism
+ - [x] Implement agent registration system
+ - [x] Create capability advertisement mechanism
 - [ ] Design agent health monitoring and status reporting
 - [ ] Implement agent versioning and compatibility checking
 - [ ] Create agent metadata and documentation systems
