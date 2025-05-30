@@ -5,7 +5,13 @@ import pytest
 
 from src.core.archive_handler import ArchiveHandler
 
-from src.agent import AgentRegistry, RequestRouter, ArchiveAgent, AgentRequest, AgentResponse
+from src.agent import (
+    AgentRegistry,
+    RequestRouter,
+    ArchiveAgent,
+    AgentRequest,
+    AgentResponse,
+)
 
 DATA_DIR = Path(__file__).resolve().parents[2] / "mock_data"
 
@@ -62,6 +68,7 @@ def test_extract_extremely_large_archive(tmp_path):
     assert len(files) == 30
     assert duration < 5.0
 
+
 def test_extract_no_disk_space(monkeypatch, tmp_path):
     handler = ArchiveHandler()
     archive = tmp_path / "small.zip"
@@ -74,3 +81,20 @@ def test_extract_no_disk_space(monkeypatch, tmp_path):
     monkeypatch.setattr(zipfile.ZipFile, "extract", no_space)
     with pytest.raises(OSError):
         handler.extract_archive(archive, tmp_path / "out")
+
+
+@pytest.mark.parametrize("file_count", [5, 15, 25])
+def test_benchmark_extraction_speed_various_sizes(tmp_path, file_count):
+    handler = ArchiveHandler()
+    archive = tmp_path / f"bench_{file_count}.zip"
+    with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED) as z:
+        chunk = b"a" * 1024 * 1024  # 1 MB per file
+        for i in range(file_count):
+            z.writestr(f"file_{i}.txt", chunk)
+
+    start = time.time()
+    files = handler.extract_archive(archive, tmp_path / "out")
+    duration = time.time() - start
+
+    assert len(files) == file_count
+    assert duration < file_count * 0.1 + 2
