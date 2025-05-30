@@ -1,0 +1,14 @@
+{
+  "name": "extract_archive_tool",
+  "description": "Extract archives and return file listings with optional content parsing.",
+  "parameters": {
+    "file_path": {"type": "string", "description": "Path to the archive file"},
+    "extraction_mode": {
+      "type": "string",
+      "enum": ["basic", "detailed", "content", "smart"],
+      "default": "basic"
+    },
+    "include_metadata": {"type": "boolean", "default": true},
+    "max_files": {"type": "integer", "default": 1000, "minimum": 1}
+  }
+}

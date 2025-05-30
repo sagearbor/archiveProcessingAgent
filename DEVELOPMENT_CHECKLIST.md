@@ -670,29 +670,29 @@ A2A Archive Agent
 
 - [x] Handle file not found errors gracefully
 - [x] Manage permission denied scenarios
-- [ ] Deal with corrupted archive files
-- [ ] Handle out-of-disk-space conditions
-- [ ] Provide informative error messages with suggested solutions
+- [x] Deal with corrupted archive files
+- [x] Handle out-of-disk-space conditions
+- [x] Provide informative error messages with suggested solutions
 
 **MCP Integration:**
-- [ ] Create MCP tool manifest/configuration file
-- [ ] Define tool metadata and description
-- [ ] Specify parameter schemas and validation rules
-- [ ] Document tool capabilities and limitations
+- [x] Create MCP tool manifest/configuration file
+- [x] Define tool metadata and description
+- [x] Specify parameter schemas and validation rules
+- [x] Document tool capabilities and limitations
 - [ ] Create tool registration and discovery functionality
 
 **Testing:**
 - [x] Create `tests/mcp/test_mcp_tool.py`
-- [ ] Test with all mock archive files
+- [x] Test with all mock archive files
 - [x] Test different extraction modes
 - [x] Test input validation and error conditions
-- [ ] Test output format consistency
+- [x] Test output format consistency
 - [ ] Test integration with MCP framework
 
 **Documentation:**
 - [x] Create tool usage documentation in `docs/mcp_tool_usage.md`
 - [x] Include parameter descriptions and examples
-- [ ] Document error codes and troubleshooting
+- [x] Document error codes and troubleshooting
 - [ ] Provide integration examples for different agent types
 
 **Deliverable**: Production-ready MCP tool for basic archive operations
