@@ -115,3 +115,35 @@ def test_memory_usage_during_extraction(tmp_path):
     tracemalloc.stop()
 
     assert peak < 50 * 1024 * 1024
+
+
+@pytest.mark.parametrize(
+    "fname,request_text",
+    [
+        ("mock_archive.zip", "list files"),
+        ("mock_word.docx", "extract text"),
+        ("mock_excel.xlsx", "summarize"),
+    ],
+)
+def test_response_times_for_request_types(fname, request_text):
+    agent = ArchiveAgent()
+    registry = AgentRegistry()
+    router = RequestRouter(registry)
+    registry.register_agent(
+        "perf",
+        {"formats": ["*"]},
+        version="1.0",
+        handler=make_handler(agent),
+    )
+
+    request = AgentRequest(
+        file_path=str(DATA_DIR / fname),
+        request_text=request_text,
+    ).to_dict()
+
+    start = time.time()
+    result = router.send_request(request, retries=0)
+    duration = time.time() - start
+
+    assert result["status"] == "success"
+    assert duration < 1.0
