@@ -1,5 +1,7 @@
+import io
 import py7zr
 import pytest
+import tarfile
 import zipfile
 from pathlib import Path
 
@@ -27,4 +29,27 @@ def test_extract_permission_denied(monkeypatch, tmp_path):
     monkeypatch.setattr(zipfile.ZipFile, "extract", deny)
     handler = ArchiveHandler()
     with pytest.raises(PermissionError):
+        handler.extract_archive(archive, tmp_path / "out")
+
+
+def test_zip_directory_traversal(tmp_path: Path):
+    archive = tmp_path / "bad.zip"
+    with zipfile.ZipFile(archive, "w") as z:
+        z.writestr("../evil.txt", "boom")
+
+    handler = ArchiveHandler()
+    with pytest.raises(ValueError):
+        handler.extract_archive(archive, tmp_path / "out")
+
+
+def test_tar_directory_traversal(tmp_path: Path):
+    archive = tmp_path / "bad.tar"
+    with tarfile.open(archive, "w") as t:
+        info = tarfile.TarInfo("../evil.txt")
+        data = b"boom"
+        info.size = len(data)
+        t.addfile(info, io.BytesIO(data))
+
+    handler = ArchiveHandler()
+    with pytest.raises(ValueError):
         handler.extract_archive(archive, tmp_path / "out")
