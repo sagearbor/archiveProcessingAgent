@@ -88,3 +88,15 @@ def test_extract_tool_special_char_filename(tmp_path):
         (Path(f).name if isinstance(f, str) else Path(f["path"]).name) == "file.txt"
         for f in result["files"]
     )
+
+
+def test_zip_bomb_detection(tmp_path: Path):
+    """Ensure extraction aborts when archive has too many files."""
+    archive = tmp_path / "bomb.zip"
+    with zipfile.ZipFile(archive, "w") as z:
+        for i in range(10):
+            z.writestr(f"f{i}.txt", "boom")
+
+    handler = ArchiveHandler()
+    with pytest.raises(ValueError):
+        handler.extract_archive(archive, max_members=5)

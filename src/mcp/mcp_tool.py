@@ -57,7 +57,9 @@ def extract_archive_tool(
 
     start = datetime.now(UTC)
     try:
-        extracted_files: List[Path] = handler.extract_archive(path)
+        extracted_files: List[Path] = handler.extract_archive(
+            path, max_members=cfg.max_archive_files
+        )
     except PermissionError:
         return {
             "status": "error",

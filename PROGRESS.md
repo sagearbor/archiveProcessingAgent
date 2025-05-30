@@ -26,6 +26,8 @@ Completed Step 12 subtask **Test with realistic production-scale workloads**.
 Completed Step 12 subtask **Test against directory traversal attacks (zip slip vulnerabilities)**.
 Added tests verifying input validation and sanitization of request parameters and file paths.
 Completed Step 12 subtask **Verify input validation and sanitization**.
+Added zip bomb detection test in `tests/integration/test_security.py`.
+Completed Step 12 subtask **Test with malicious archives (zip bombs, excessive nesting)**.
 
 ## Next Step
-Continue with **Phase 6**, **Step 12**, subtask **Test with malicious archives (zip bombs, excessive nesting)**.
+Continue with **Phase 6**, **Step 12**, subtask **Verify temporary file cleanup and security**.
