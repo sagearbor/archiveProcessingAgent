@@ -78,3 +78,22 @@ def load_config() -> AppConfig:
         agent_version=os.getenv("AGENT_VERSION", "1.0.0"),
         agent_auth_token=os.getenv("AGENT_AUTH_TOKEN"),
     )
+
+
+class ConfigManager:
+    """Provides access to application configuration values."""
+
+    def __init__(self) -> None:
+        self._config = load_config()
+
+    def get_azure_storage_config(self) -> dict:
+        """Return Azure Storage connection configuration."""
+        return {
+            "account_name": self._config.azure_storage_account_name,
+            "account_key": self._config.azure_storage_account_key,
+            "key_vault_url": self._config.azure_key_vault_url,
+        }
+
+    def get_application_config(self) -> AppConfig:
+        """Return loaded application configuration dataclass."""
+        return self._config
