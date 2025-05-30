@@ -33,3 +33,34 @@ Agents should return an `AgentResponse` with `status="error"` and a helpful `mes
 req = AgentRequest(file_path="mock_data/mock_archive.zip", request_text="list files")
 router.send_request(req.to_dict())
 ```
+
+## API Endpoints
+While the archive agent is typically embedded within other systems, it exposes a minimal HTTP interface for direct integration. Implementations may vary, but a reference layout is provided below.
+
+### `POST /process`
+Submit an `AgentRequest` payload as JSON. The service returns an `AgentResponse` object.
+
+```
+POST /process
+Content-Type: application/json
+{
+  "file_path": "mock_data/mock_archive.zip",
+  "request_text": "summarize",
+  "response_format": "json",
+  "agent": "client-1"
+}
+```
+
+### `GET /status`
+Returns simple JSON status including version and health information.
+
+```
+GET /status
+{
+  "agent": "archive-processing-agent",
+  "version": "1.0.0",
+  "status": "online"
+}
+```
+
+These endpoints are optional but recommended for services that need a lightweight HTTP interface in addition to direct A2A communication.

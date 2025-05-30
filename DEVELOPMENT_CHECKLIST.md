@@ -887,11 +887,11 @@ A2A Archive Agent
 - [ ] Performance testing under various loads
 
 **Documentation:**
- - [x] Create A2A protocol specification document
- - [x] Write integration guide for other agents
- - [ ] Document API endpoints and message formats
- - [x] Create troubleshooting and debugging guide
- - [x] Provide example implementations and use cases
+- [x] Create A2A protocol specification document
+- [x] Write integration guide for other agents
+- [x] Document API endpoints and message formats
+- [x] Create troubleshooting and debugging guide
+- [x] Provide example implementations and use cases
 
 **Deliverable**: Complete A2A agent ready for integration with other agents
 
