@@ -42,3 +42,26 @@ def test_upload_and_cleanup(monkeypatch, tmp_path: Path):
 
     client.cleanup_temp_blobs(prefix="tmp/")
     assert fake.container.deleted == ["tmp/file1.txt", "tmp/file2.txt"]
+
+
+def test_extract_uses_azure_storage(monkeypatch, tmp_path: Path):
+    import zipfile
+    from src.core.archive_handler import ArchiveHandler
+
+    fake = FakeService()
+    monkeypatch.setattr(
+        "src.utils.azure_storage.BlobServiceClient",
+        lambda account_url, credential: fake,
+    )
+    monkeypatch.setenv("APP_ENV", "production")
+    monkeypatch.setenv("LOG_LEVEL", "INFO")
+
+    archive = tmp_path / "demo.zip"
+    with zipfile.ZipFile(archive, "w") as z:
+        z.writestr("file.txt", "content")
+
+    client = AzureStorageClient("acct", "key", "container")
+    handler = ArchiveHandler(storage_client=client)
+
+    handler.extract_archive(archive)
+    assert fake.container.uploaded == ["file.txt"]

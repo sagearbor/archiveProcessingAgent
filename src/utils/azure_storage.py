@@ -20,6 +20,7 @@ class AzureStorageClient:
         url = f"https://{account_name}.blob.core.windows.net"
         self._client = BlobServiceClient(account_url=url, credential=account_key)
         self._container = self._client.get_container_client(container)
+        self.container = container
 
     def upload_files(self, files: Iterable[Path]) -> None:
         if self._container is None:  # pragma: no cover - offline testing
