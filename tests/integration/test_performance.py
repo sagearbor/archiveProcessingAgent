@@ -4,6 +4,8 @@ import zipfile
 import tracemalloc
 from concurrent.futures import ThreadPoolExecutor
 import pytest
+import cProfile
+import pstats
 
 from src.core.archive_handler import ArchiveHandler
 
@@ -180,3 +182,15 @@ def test_router_concurrent_requests():
     assert metrics["successes"] == 10
 
 
+def test_cpu_usage_profile(tmp_path):
+    handler = ArchiveHandler()
+    archive = tmp_path / "cpu.zip"
+    with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED) as z:
+        for i in range(20):
+            z.writestr(f"file_{i}.txt", "data" * 1000)
+
+    start = time.process_time()
+    handler.extract_archive(archive, tmp_path / "out")
+    cpu_time = time.process_time() - start
+
+    assert cpu_time < 1.0
