@@ -10,7 +10,9 @@ venv/
 .DS_Store
 *.tmp
 *.temp
-/mock_data/*.tmp
+/mock_data/*
+!/mock_data/README.md
+!/mock_data/.gitkeep
 /mock_data/extracted_*
 
 # Environment and secrets
@@ -21,14 +23,3 @@ venv/
 
 # Azure specific
 .azure/
-
-# Mock data binaries
-/mock_data/*.zip
-/mock_data/*.tar.gz
-/mock_data/*.tar
-/mock_data/*.pbix
-/mock_data/*.pptx
-/mock_data/*.xlsx
-/mock_data/*.docx
-/mock_data/*.twbx
-/mock_data/*.gz
