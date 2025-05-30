@@ -482,8 +482,8 @@ A2A Archive Agent
 **Goal**: Create intelligent content filtering and scoring system
 
 **Core Relevance Engine:**
-- [ ] Create `src/core/relevance_engine.py` with class `RelevanceEngine`
-- [ ] Implement method `score_content_relevance(content, request_context)`:
+- [x] Create `src/core/relevance_engine.py` with class `RelevanceEngine`
+- [x] Implement method `score_content_relevance(content, request_context)`:
   - Analyze content against request keywords and intent
   - Score based on content type importance (code vs documentation vs data)
   - Consider file location and naming patterns
@@ -491,14 +491,14 @@ A2A Archive Agent
   - Return numerical relevance score (0.0 to 1.0)
 
 **Content Categorization:**
-- [ ] Implement method `categorize_content(file_list, content_data)`:
+- [x] Implement method `categorize_content(file_list, content_data)`:
   - Classify files as: data, code, documentation, configuration, media
   - Identify primary programming languages or data formats
   - Detect file relationships and dependencies
   - Tag files with semantic labels (schemas, analysis, reports, etc.)
   - Return categorized file structure
 
-- [ ] Implement method `identify_key_files(categorized_content)`:
+- [x] Implement method `identify_key_files(categorized_content)`:
   - Prioritize README files, main modules, configuration files
   - Identify entry points for applications or analysis
   - Find critical data files and schemas
@@ -506,14 +506,14 @@ A2A Archive Agent
   - Return ranked list of most important files
 
 **Keyword and Context Analysis:**
-- [ ] Implement method `extract_keywords(request_text)`:
+- [x] Implement method `extract_keywords(request_text)`:
   - Parse natural language requests for key terms
   - Identify technical terms and domain-specific language
   - Extract intent indicators (find, extract, analyze, list, etc.)
   - Recognize file type preferences and format requirements
   - Return structured keyword analysis
 
-- [ ] Implement method `match_content_to_intent(content, intent_keywords)`:
+- [x] Implement method `match_content_to_intent(content, intent_keywords)`:
   - Match file contents against extracted keywords
   - Consider semantic similarity, not just exact matches
   - Weight matches by content location (title vs body vs metadata)
@@ -521,26 +521,26 @@ A2A Archive Agent
   - Return detailed matching scores and explanations
 
 **Configurable Relevance Profiles:**
-- [ ] Create relevance profile configurations for different use cases:
+- [x] Create relevance profile configurations for different use cases:
   - **Data Analysis Profile**: Prioritize data files, notebooks, documentation
   - **Code Review Profile**: Focus on source code, tests, build files
   - **Business Intelligence Profile**: Emphasize reports, dashboards, data models
   - **Documentation Profile**: Prioritize README, docs, comments, help files
   - **Configuration Profile**: Focus on config files, settings, environment variables
 
-- [ ] Implement method `apply_relevance_profile(content, profile_name)`:
+- [x] Implement method `apply_relevance_profile(content, profile_name)`:
   - Load appropriate scoring weights for the profile
   - Apply profile-specific filtering rules
   - Adjust content categorization based on profile
   - Return profile-optimized relevance scores
 
 **Testing:**
-- [ ] Create `tests/core/test_relevance_engine.py`
-- [ ] Test scoring accuracy with various request types
-- [ ] Test categorization with mixed content types
-- [ ] Verify keyword extraction and matching
-- [ ] Test different relevance profiles
-- [ ] Test filtering functions with edge cases
+- [x] Create `tests/core/test_relevance_engine.py`
+- [x] Test scoring accuracy with various request types
+- [x] Test categorization with mixed content types
+- [x] Verify keyword extraction and matching
+- [x] Test different relevance profiles
+- [x] Test filtering functions with edge cases
 
 **Deliverable**: Intelligent content filtering that adapts to request context
 
