@@ -2,6 +2,7 @@ import time
 from pathlib import Path
 import zipfile
 import tracemalloc
+from concurrent.futures import ThreadPoolExecutor
 import pytest
 
 from src.core.archive_handler import ArchiveHandler
@@ -147,3 +148,35 @@ def test_response_times_for_request_types(fname, request_text):
 
     assert result["status"] == "success"
     assert duration < 1.0
+
+
+def test_router_concurrent_requests():
+    agent = ArchiveAgent()
+    registry = AgentRegistry()
+    router = RequestRouter(registry)
+    registry.register_agent(
+        "concurrent",
+        {"formats": ["*"]},
+        version="1.0",
+        handler=make_handler(agent),
+    )
+
+    request = AgentRequest(
+        file_path=str(DATA_DIR / "mock_archive.zip"),
+        request_text="list files",
+    ).to_dict()
+
+    def send():
+        return router.send_request(request, retries=0)
+
+    with ThreadPoolExecutor(max_workers=5) as exe:
+        results = list(exe.map(lambda _: send(), range(10)))
+
+    for res in results:
+        assert res["status"] == "success"
+
+    metrics = router.get_metrics()
+    assert metrics["requests"] == 10
+    assert metrics["successes"] == 10
+
+
