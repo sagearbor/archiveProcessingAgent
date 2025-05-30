@@ -14,6 +14,7 @@
 - Added test for password-protected archives in `tests/integration/test_security.py`.
 - Added test for permission denied extraction in `tests/integration/test_security.py`.
 - Added test for disk space exhaustion in `tests/integration/test_performance.py`.
+- Completed Step 12 subtask **Benchmark extraction speed with various archive sizes**.
 
 ## Next Step
-Continue with **Phase 6**, **Step 12**, subtask **Benchmark extraction speed with various archive sizes**.
+Continue with **Phase 6**, **Step 12**, subtask **Test memory usage patterns and optimization**.
