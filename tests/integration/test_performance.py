@@ -1,6 +1,7 @@
 import time
 from pathlib import Path
 import zipfile
+import pytest
 
 from src.core.archive_handler import ArchiveHandler
 
@@ -60,3 +61,16 @@ def test_extract_extremely_large_archive(tmp_path):
 
     assert len(files) == 30
     assert duration < 5.0
+
+def test_extract_no_disk_space(monkeypatch, tmp_path):
+    handler = ArchiveHandler()
+    archive = tmp_path / "small.zip"
+    with zipfile.ZipFile(archive, "w") as z:
+        z.writestr("file.txt", "data")
+
+    def no_space(*args, **kwargs):
+        raise OSError(28, "No space left on device")
+
+    monkeypatch.setattr(zipfile.ZipFile, "extract", no_space)
+    with pytest.raises(OSError):
+        handler.extract_archive(archive, tmp_path / "out")

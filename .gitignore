@@ -10,10 +10,10 @@ venv/
 .DS_Store
 *.tmp
 *.temp
+/mock_data/*.tmp
+/mock_data/extracted_*
 /mock_data/*
 !/mock_data/README.md
-!/mock_data/.gitkeep
-/mock_data/extracted_*
 
 # Environment and secrets
 .env
