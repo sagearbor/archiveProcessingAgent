@@ -934,30 +934,30 @@ A2A Archive Agent
 - [ ] Testing procedures and quality gates
 - [ ] Release process and versioning strategy
 
-**Deployment Guide:**
-- [ ] Create Azure deployment documentation:
+-**Deployment Guide:**
+- [x] Create Azure deployment documentation:
   - Azure App Service deployment steps
   - Azure Container Instances configuration
   - Azure Functions deployment (if applicable)
   - Environment variable configuration in Azure
   - Azure Key Vault setup and permissions
 
-**Azure-Specific Configuration:**
-- [ ] Document Azure resource setup:
+-**Azure-Specific Configuration:**
+- [x] Document Azure resource setup:
   - Storage Account creation and configuration
   - Key Vault setup and access policies
   - Managed Identity configuration for secure access
   - Network security and access controls
 
-**Environment Setup:**
-- [ ] Create deployment scripts for Azure:
+-**Environment Setup:**
+- [x] Create deployment scripts for Azure:
   - ARM templates or Bicep files for infrastructure
   - Azure CLI deployment scripts
   - CI/CD pipeline configuration for Azure DevOps or GitHub Actions
   - Health check and monitoring setup
 
-**Production Configuration:**
-- [ ] Create production .env template for Azure:
+-**Production Configuration:**
+- [x] Create production .env template for Azure:
   ```
   # Production Azure Configuration
   AZURE_STORAGE_ACCOUNT_NAME=prod_storage_account

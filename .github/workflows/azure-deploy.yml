@@ -1,0 +1,27 @@
+name: Azure Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        resourceGroupName: ${{ secrets.AZURE_RESOURCE_GROUP }}
+        template: scripts/main.bicep
+        parameters: |
+          storageAccountName=${{ secrets.STORAGE_ACCOUNT_NAME }}
+          appName=${{ secrets.APP_SERVICE_NAME }}
+          keyVaultName=${{ secrets.KEY_VAULT_NAME }}
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ secrets.APP_SERVICE_NAME }}
+        package: .
