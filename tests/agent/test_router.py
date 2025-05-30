@@ -5,6 +5,7 @@ from src.agent.registry import AgentRegistry
 from src.agent.router import (
     AgentCommunicationError,
     RequestRouter,
+    RateLimitExceededError,
 )
 
 
@@ -86,3 +87,22 @@ def test_audit_logging():
     assert entry["agent"] == "a1"
     assert entry["success"] is True
     assert entry["request"]["id"] == 123
+
+
+def test_rate_limiting_and_metrics():
+    registry = AgentRegistry()
+
+    def ok(_):
+        return "ok"
+
+    router = RequestRouter(registry, requests_per_minute=1)
+    router.register_agent("a1", {}, handler=ok)
+    router.send_request({}, retries=0)
+    with pytest.raises(RateLimitExceededError):
+        router.send_request({}, retries=0)
+    metrics = router.get_metrics()
+    assert metrics["requests"] == 2
+    assert metrics["successes"] == 1
+    assert metrics["failures"] == 1
+    traces = router.get_traces()
+    assert len(traces) == 2
