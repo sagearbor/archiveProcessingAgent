@@ -3,12 +3,16 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Dict, Iterable, List
+import errno
+import tarfile
+import zipfile
+
+import py7zr
 
 from src.core.archive_handler import ArchiveHandler
 from src.core.office_parser import OfficeParser
 from src.core.relevance_engine import RelevanceEngine
 from src.utils.config import load_config
-
 
 
 ALLOWED_MODES = {"basic", "detailed", "content", "smart"}
@@ -55,7 +59,26 @@ def extract_archive_tool(
     try:
         extracted_files: List[Path] = handler.extract_archive(path)
     except PermissionError:
-        return {"status": "error", "message": "Permission denied"}
+        return {
+            "status": "error",
+            "message": "Permission denied. Check file permissions and try again.",
+        }
+    except (
+        zipfile.BadZipFile,
+        tarfile.ReadError,
+        py7zr.exceptions.ArchiveError,
+    ) as exc:
+        return {
+            "status": "error",
+            "message": "Corrupted archive file. Unable to extract.",
+        }
+    except OSError as exc:
+        if exc.errno == errno.ENOSPC:
+            return {
+                "status": "error",
+                "message": "Out of disk space during extraction. Free space and retry.",
+            }
+        return {"status": "error", "message": str(exc)}
     except Exception as exc:
         return {"status": "error", "message": str(exc)}
 
@@ -76,7 +99,11 @@ def extract_archive_tool(
         if extraction_mode == "smart":
             engine = RelevanceEngine()
             keywords = engine.extract_keywords(" ")
-            contents = {k: v for k, v in contents.items() if engine.match_content_to_intent("\n".join(v), keywords) > 0}
+            contents = {
+                k: v
+                for k, v in contents.items()
+                if engine.match_content_to_intent("\n".join(v), keywords) > 0
+            }
         content_data = contents
     archive_info = {
         "type": archive_type,

@@ -12,7 +12,16 @@ venv/
 *.temp
 /mock_data/*.tmp
 /mock_data/extracted_*
-/mock_data/mock_*
+# Ignore binary mock data files
+/mock_data/*.zip
+/mock_data/*.tar.gz
+/mock_data/*.tar
+/mock_data/*.pbix
+/mock_data/*.pptx
+/mock_data/*.xlsx
+/mock_data/*.docx
+/mock_data/*.twbx
+/mock_data/*.gz
 
 # Environment and secrets
 .env
