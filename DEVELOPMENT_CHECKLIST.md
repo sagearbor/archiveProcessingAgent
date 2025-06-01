@@ -1046,7 +1046,7 @@ A2A Archive Agent
 - [ ] Add `STORAGE_PROVIDER` and generic variable names in `src/utils/config.py`
 - [ ] Update `.env` examples and setup scripts for provider selection (standalone)
 - [ ] Create `.env.local.example` for local deployments (standalone)
-- [ ] Update README and docs with provider-agnostic instructions (standalone)
+- [x] Update README and docs with provider-agnostic instructions (standalone)
 - [ ] Add integration tests for Azure and local providers
 - [ ] Verify backward compatibility with existing Azure deployment
 

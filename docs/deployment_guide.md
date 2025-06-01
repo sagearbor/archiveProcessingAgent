@@ -1,11 +1,11 @@
-# Azure Deployment Guide
+# Deployment Guide
 
-This document outlines how to deploy the archive processing agent to Azure.
+This document outlines how to deploy the archive processing agent to a generic cloud environment.
 
-1. Create a Storage Account and Key Vault.
-2. Set up a Managed Identity with access to the Key Vault and Storage Account.
-3. Configure environment variables in the Azure App Service or container instance.
-4. Deploy the application code using `az webapp up` or a CI/CD pipeline.
-5. Enable monitoring and health checks using Azure Application Insights.
+1. Provision storage and a secrets manager for credentials.
+2. Configure authentication so the agent can access these resources.
+3. Set environment variables in your application host or container.
+4. Deploy the application using your provider's CLI or CI/CD pipeline.
+5. Enable monitoring and health checks using your provider's tooling.
 
-Example CLI deployment script is provided in `scripts/deploy_azure.sh`.
+An example Azure deployment script is available in `scripts/deploy_azure.sh` as a reference.
