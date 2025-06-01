@@ -1049,7 +1049,6 @@ A2A Archive Agent
 - [x] Add integration tests for Azure and local providers
 - [x] Verify backward compatibility with existing Azure deployment
 
-
 ## Development Guidelines
 
 ### Code Style & Standards
