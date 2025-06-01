@@ -21,6 +21,10 @@ class AppConfig:
     azure_storage_account_name: Optional[str] = None
     azure_storage_account_key: Optional[str] = None
     azure_key_vault_url: Optional[str] = None
+    storage_provider: str = "azure"
+    storage_account_name: Optional[str] = None
+    storage_account_key: Optional[str] = None
+    storage_container_name: str = "archive-processing"
     app_env: str = "development"
     log_level: str = "INFO"
     max_file_size_mb: int = 100
@@ -71,6 +75,14 @@ def load_config() -> AppConfig:
         azure_storage_account_name=os.getenv("AZURE_STORAGE_ACCOUNT_NAME"),
         azure_storage_account_key=os.getenv("AZURE_STORAGE_ACCOUNT_KEY"),
         azure_key_vault_url=vault_url,
+        storage_provider=os.getenv("STORAGE_PROVIDER", "azure"),
+        storage_account_name=os.getenv("STORAGE_ACCOUNT_NAME")
+        or os.getenv("AZURE_STORAGE_ACCOUNT_NAME"),
+        storage_account_key=os.getenv("STORAGE_ACCOUNT_KEY")
+        or os.getenv("AZURE_STORAGE_ACCOUNT_KEY"),
+        storage_container_name=os.getenv(
+            "STORAGE_CONTAINER_NAME", "archive-processing"
+        ),
         app_env=os.getenv("APP_ENV", "development"),
         log_level=os.getenv("LOG_LEVEL", "INFO"),
         max_file_size_mb=int(os.getenv("MAX_FILE_SIZE_MB", "100")),
@@ -88,11 +100,22 @@ class ConfigManager:
     def __init__(self) -> None:
         self._config = load_config()
 
-    def get_azure_storage_config(self) -> dict:
-        """Return Azure Storage connection configuration."""
+    def get_storage_config(self) -> dict:
+        """Return generic storage configuration."""
         return {
-            "account_name": self._config.azure_storage_account_name,
-            "account_key": self._config.azure_storage_account_key,
+            "provider": self._config.storage_provider,
+            "account_name": self._config.storage_account_name,
+            "account_key": self._config.storage_account_key,
+            "container": self._config.storage_container_name,
+        }
+
+    # Backward compatibility
+    def get_azure_storage_config(self) -> dict:
+        return {
+            "account_name": self._config.azure_storage_account_name
+            or self._config.storage_account_name,
+            "account_key": self._config.azure_storage_account_key
+            or self._config.storage_account_key,
             "key_vault_url": self._config.azure_key_vault_url,
         }
 

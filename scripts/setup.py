@@ -3,6 +3,8 @@ from typing import Dict, Optional
 import subprocess
 
 QUESTIONS = [
+    ("STORAGE_PROVIDER", "Storage provider (azure/local)"),
+    ("STORAGE_CONTAINER_NAME", "Storage container name"),
     ("AZURE_STORAGE_ACCOUNT_NAME", "Azure storage account name"),
     ("AZURE_STORAGE_ACCOUNT_KEY", "Azure storage account key"),
     ("AZURE_KEY_VAULT_URL", "Azure Key Vault URL"),
