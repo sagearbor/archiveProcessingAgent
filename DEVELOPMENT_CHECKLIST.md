@@ -1044,7 +1044,7 @@ A2A Archive Agent
 - [ ] Implement `LocalStorageClient` in `src/utils/local_storage.py` (standalone)
 - [ ] Refactor `src/core/archive_handler.py` to depend on `StorageClient`
 - [ ] Add `STORAGE_PROVIDER` and generic variable names in `src/utils/config.py`
-- [ ] Update `.env` examples and setup scripts for provider selection (standalone)
+- [x] Update `.env` examples and setup scripts for provider selection (standalone)
 - [ ] Create `.env.local.example` for local deployments (standalone)
 - [ ] Update README and docs with provider-agnostic instructions (standalone)
 - [ ] Add integration tests for Azure and local providers
