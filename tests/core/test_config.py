@@ -21,10 +21,11 @@ def test_load_config_missing(monkeypatch):
 def test_config_manager(monkeypatch):
     monkeypatch.setenv("APP_ENV", "test")
     monkeypatch.setenv("LOG_LEVEL", "INFO")
-    monkeypatch.setenv("AZURE_STORAGE_ACCOUNT_NAME", "acc")
-    monkeypatch.setenv("AZURE_STORAGE_ACCOUNT_KEY", "key")
+    monkeypatch.setenv("STORAGE_PROVIDER", "azure")
+    monkeypatch.setenv("STORAGE_ACCOUNT_NAME", "acc")
+    monkeypatch.setenv("STORAGE_ACCOUNT_KEY", "key")
     mgr = ConfigManager()
-    storage_cfg = mgr.get_azure_storage_config()
+    storage_cfg = mgr.get_storage_config()
     assert storage_cfg["account_name"] == "acc"
     app_cfg = mgr.get_application_config()
     assert app_cfg.app_env == "test"
