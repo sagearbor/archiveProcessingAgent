@@ -24,6 +24,7 @@ textarea { width: 100%; height: 200px; }
 <body>
 <h1>Archive Processing Agent Setup</h1>
 <form id=\"setupForm\">
+  <label>Storage Provider <input type=\"text\" id=\"STORAGE_PROVIDER\" value=\"azure\"></label>
   <label>Azure Storage Account Name <input type=\"text\" id=\"AZURE_STORAGE_ACCOUNT_NAME\"></label>
   <label>Azure Storage Account Key <input type=\"text\" id=\"AZURE_STORAGE_ACCOUNT_KEY\"></label>
   <label>Azure Key Vault URL <input type=\"text\" id=\"AZURE_KEY_VAULT_URL\"></label>
@@ -45,7 +46,7 @@ textarea { width: 100%; height: 200px; }
 <pre id=\"tests\"></pre>
 <script>
 function generateEnv() {
-  const fields = ['AZURE_STORAGE_ACCOUNT_NAME','AZURE_STORAGE_ACCOUNT_KEY','AZURE_KEY_VAULT_URL','APP_ENV','LOG_LEVEL','MAX_FILE_SIZE_MB','MAX_ARCHIVE_FILES','TEMP_STORAGE_PATH','AGENT_NAME','AGENT_VERSION','AGENT_AUTH_TOKEN'];
+  const fields = ['STORAGE_PROVIDER','AZURE_STORAGE_ACCOUNT_NAME','AZURE_STORAGE_ACCOUNT_KEY','AZURE_KEY_VAULT_URL','APP_ENV','LOG_LEVEL','MAX_FILE_SIZE_MB','MAX_ARCHIVE_FILES','TEMP_STORAGE_PATH','AGENT_NAME','AGENT_VERSION','AGENT_AUTH_TOKEN'];
   let env = '';
   let manual = false;
   fields.forEach(function(id){
