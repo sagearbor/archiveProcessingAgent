@@ -1038,19 +1038,16 @@ A2A Archive Agent
 ### Step 14: Multi-Provider Storage Support
 **Goal**: Allow non-Azure deployments by abstracting the storage backend.
 
-**Tasks:**
-- [ ] Define abstract `StorageClient` in `src/utils/storage.py`
-- [ ] Move Azure logic to `src/utils/azure_storage.py` implementing `StorageClient`
-- [ ] Implement `LocalStorageClient` in `src/utils/local_storage.py` (standalone)
-- [ ] Refactor `src/core/archive_handler.py` to depend on `StorageClient`
-- [ ] Add `STORAGE_PROVIDER` and generic variable names in `src/utils/config.py`
-- [ ] Update `.env` examples and setup scripts for provider selection (standalone)
-- [ ] Create `.env.local.example` for local deployments (standalone)
+- [x] Define abstract `StorageClient` in `src/utils/storage.py`
+- [x] Move Azure logic to `src/utils/azure_storage.py` implementing `StorageClient`
+- [x] Implement `LocalStorageClient` in `src/utils/local_storage.py` (standalone)
+- [x] Refactor `src/core/archive_handler.py` to depend on `StorageClient`
+- [x] Add `STORAGE_PROVIDER` and generic variable names in `src/utils/config.py`
+- [x] Update `.env` examples and setup scripts for provider selection (standalone)
+- [x] Create `.env.local.example` for local deployments (standalone)
 - [x] Update README and docs with provider-agnostic instructions (standalone)
-- [ ] Add integration tests for Azure and local providers
-- [ ] Verify backward compatibility with existing Azure deployment
-
----
+- [x] Add integration tests for Azure and local providers
+- [x] Verify backward compatibility with existing Azure deployment
 
 ## Development Guidelines
 

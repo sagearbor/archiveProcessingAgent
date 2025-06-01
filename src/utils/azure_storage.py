@@ -9,8 +9,11 @@ except Exception:  # pragma: no cover - optional dependency
     BlobServiceClient = None
 
 
-class AzureStorageClient:
-    """Simple wrapper around Azure Blob Storage for uploads and cleanup."""
+from .storage import StorageClient
+
+
+class AzureStorageClient(StorageClient):
+    """Storage client using Azure Blob Storage."""
 
     def __init__(self, account_name: str, account_key: str, container: str) -> None:
         if BlobServiceClient is None:  # pragma: no cover - offline testing

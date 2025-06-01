@@ -8,4 +8,9 @@ This document outlines how to deploy the archive processing agent to a generic c
 4. Deploy the application using your provider's CLI or CI/CD pipeline.
 5. Enable monitoring and health checks using your provider's tooling.
 
-An example Azure deployment script is available in `scripts/deploy_azure.sh` as a reference.
+Example CLI deployment script is provided in `scripts/deploy_azure.sh`.
+
+## Local Deployment
+
+Set `STORAGE_PROVIDER=local` and specify `LOCAL_STORAGE_PATH` to store files on
+the local filesystem. Other settings mirror the `.env.local.example` template.
