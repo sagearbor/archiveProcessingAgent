@@ -10,7 +10,7 @@ from typing import List, Optional
 
 import py7zr
 
-from src.utils.azure_storage import AzureStorageClient
+from src.utils.storage import StorageClient
 from src.utils.config import AppConfig, load_config
 
 try:
@@ -32,21 +32,23 @@ class ArchiveHandler:
 
     def __init__(
         self,
-        storage_client: AzureStorageClient | None = None,
+        storage_client: StorageClient | None = None,
         config: AppConfig | None = None,
     ) -> None:
-        """Initialize handler with optional Azure storage and config."""
+        """Initialize handler with optional storage client and config."""
         self.storage_client = storage_client
         self.config = config or load_config()
 
-    def _use_azure(self, file_path: Path) -> bool:
-        """Return True if Azure storage should be used for this file."""
+    def _use_storage(self, file_path: Path) -> bool:
+        """Return True if external storage should be used for this file."""
         if self.storage_client is None:
             return False
-        if self.config.app_env == "production":
-            return True
-        size_limit = self.config.max_file_size_mb * 1024 * 1024
-        return file_path.stat().st_size > size_limit
+        if self.config.storage_provider == "azure":
+            if self.config.app_env == "production":
+                return True
+            size_limit = self.config.max_file_size_mb * 1024 * 1024
+            return file_path.stat().st_size > size_limit
+        return True
 
     def detect_archive_type(self, file_path: Path) -> Optional[str]:
         """Return archive type based on extension and magic bytes."""
@@ -91,12 +93,11 @@ class ArchiveHandler:
         if archive_type is None:
             raise ValueError("Unsupported archive type")
 
-        use_azure = self._use_azure(file_path)
+        use_storage = self._use_storage(file_path)
 
         if (
-            file_path.stat().st_size
-            > self.config.max_file_size_mb * 1024 * 1024
-            and not use_azure
+            file_path.stat().st_size > self.config.max_file_size_mb * 1024 * 1024
+            and not use_storage
         ):
             raise ValueError("Archive exceeds configured size limit")
 
@@ -142,7 +143,7 @@ class ArchiveHandler:
         else:
             raise ValueError("Unsupported archive type")
 
-        if use_azure:
+        if use_storage:
             self.storage_client.upload_files(extracted)
             for f in extracted:
                 try:
@@ -169,11 +170,13 @@ class ArchiveHandler:
     def temp_extract(self, file_path: Path, max_members: int = 1000):
         """Context manager that extracts to a temporary directory and cleans up."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            files = self.extract_archive(file_path, Path(tmpdir), max_members=max_members)
+            files = self.extract_archive(
+                file_path, Path(tmpdir), max_members=max_members
+            )
             try:
                 yield files
             finally:
-                if self._use_azure(file_path) and self.storage_client:
+                if self._use_storage(file_path) and self.storage_client:
                     self.storage_client.cleanup_temp_blobs()
 
     def _safe_extract(
