@@ -45,8 +45,8 @@ A2A Archive Agent
 
 - Python 3.8+
 - Git
-- Azure subscription (for production deployment)
-- OpenAI API key (for Codex development)
+ - Optional cloud provider account for production deployment
+ - Optional AI API key for development
 
 ### Installation
 
@@ -72,7 +72,6 @@ python scripts/setup.py  # interactive CLI helper (prompts to run tests when don
 # you can run later to append it to `.env`.
 # You can still create the file manually:
 cp .env.example .env
-
 # Edit `.env` and choose a storage provider (azure or local)
 # For local storage you may copy `.env.local.example` instead
 
@@ -114,7 +113,7 @@ pytest tests/  # Tests run completely offline
 
 ## 🛠️ Development
 
-This project is designed to be developed step-by-step with OpenAI Codex. See the development workflow:
+This project is designed to be developed step-by-step with an AI coding assistant (e.g., OpenAI Codex). See the development workflow:
 
 ### Development Phases
 
@@ -253,7 +252,7 @@ Binary files for this mock data will be committed separately to keep the main pr
 
 ## 🤝 Contributing
 
-This project is designed for AI-assisted development with OpenAI Codex. To contribute:
+This project is designed for AI-assisted development with tools such as OpenAI Codex. To contribute:
 
 1. **Follow the development checklist** in `DEVELOPMENT_CHECKLIST.md`
 2. **Review AGENTS.md** for AI development guidelines
@@ -273,12 +272,12 @@ This project is designed for AI-assisted development with OpenAI Codex. To contr
 3. **Run tests**: `pytest tests/` (uses mock data, works offline)
 4. **Start development**: Follow the development checklist in `AGENTS.md`
 
-### Azure Production Deployment
-1. **Create Azure resources**: Storage Account, Key Vault, App Service
-2. **Configure Managed Identity**: Set up authentication for Azure resources
-3. **Set environment variables**: Configure in Azure App Service settings
-4. **Deploy code**: Use Azure CLI, GitHub Actions, or Azure DevOps
-5. **Verify health**: Check application logs and endpoints
+### Production Deployment Example
+1. **Create cloud resources**: object storage, secrets manager, and compute service
+2. **Configure service authentication**: grant access to the necessary resources
+3. **Set environment variables**: configure them in your hosting environment
+4. **Deploy code**: use your provider's CLI or a CI/CD pipeline
+5. **Verify health**: check application logs and endpoints
 
 Detailed deployment instructions are available in `/docs/deployment_guide.md`
 
@@ -335,4 +334,4 @@ patool>=1.12.0       # Multi-format archive tool
 
 ---
 
-**Built with AI assistance using OpenAI Codex** 🤖
+**Built with AI assistance** 🤖

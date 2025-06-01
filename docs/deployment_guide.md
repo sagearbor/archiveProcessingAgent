@@ -1,16 +1,12 @@
 # Deployment Guide
 
-This document outlines how to deploy the archive processing agent. The
-`STORAGE_PROVIDER` environment variable controls whether Azure Blob Storage or
-local filesystem storage is used.
+This document outlines how to deploy the archive processing agent to a generic cloud environment.
 
-## Azure Deployment
-
-1. Create a Storage Account and Key Vault.
-2. Set up a Managed Identity with access to the Key Vault and Storage Account.
-3. Configure environment variables in the Azure App Service or container instance.
-4. Deploy the application code using `az webapp up` or a CI/CD pipeline.
-5. Enable monitoring and health checks using Azure Application Insights.
+1. Provision storage and a secrets manager for credentials.
+2. Configure authentication so the agent can access these resources.
+3. Set environment variables in your application host or container.
+4. Deploy the application using your provider's CLI or CI/CD pipeline.
+5. Enable monitoring and health checks using your provider's tooling.
 
 Example CLI deployment script is provided in `scripts/deploy_azure.sh`.
 
