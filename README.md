@@ -72,6 +72,7 @@ python scripts/setup.py  # interactive CLI helper (prompts to run tests when don
 # you can run later to append it to `.env`.
 # You can still create the file manually:
 cp .env.example .env
+
 # Edit `.env` and choose a storage provider (azure or local)
 # For local storage you may copy `.env.local.example` instead
 

@@ -43,7 +43,8 @@ function generateEnv() {
     if(id === 'AGENT_AUTH_TOKEN' && val === 'MANUAL') {
       manual = true;
     } else if(val) {
-      env += id + '=' + val + '\n';
+      env += id + '=' + val + '
+';
     }
   });
   document.getElementById('output').textContent = env;

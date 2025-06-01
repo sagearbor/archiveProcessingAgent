@@ -1038,7 +1038,6 @@ A2A Archive Agent
 ### Step 14: Multi-Provider Storage Support
 **Goal**: Allow non-Azure deployments by abstracting the storage backend.
 
-**Tasks:**
 - [x] Define abstract `StorageClient` in `src/utils/storage.py`
 - [x] Move Azure logic to `src/utils/azure_storage.py` implementing `StorageClient`
 - [x] Implement `LocalStorageClient` in `src/utils/local_storage.py` (standalone)
@@ -1050,7 +1049,6 @@ A2A Archive Agent
 - [x] Add integration tests for Azure and local providers
 - [x] Verify backward compatibility with existing Azure deployment
 
----
 
 ## Development Guidelines
 
